@@ -1,0 +1,261 @@
+{
+  "entities": {
+    "User": {
+      "title": "User Profile",
+      "description": "User account information and profile details.",
+      "type": "object",
+      "properties": {
+        "uid": { "type": "string" },
+        "email": { "type": "string" },
+        "displayName": { "type": "string" },
+        "bio": { "type": "string" },
+        "photoURL": { "type": "string" },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "postsCount": { "type": "number" },
+        "followersCount": { "type": "number" },
+        "followingCount": { "type": "number" },
+        "isPremium": { "type": "boolean" },
+        "isVerified": { "type": "boolean" },
+        "isBot": { "type": "boolean" },
+        "paymentStatus": { "type": "string", "enum": ["none", "paid", "expired"] },
+        "kycStatus": { "type": "string", "enum": ["none", "pending", "approved", "rejected"] },
+        "subscriptionExpiry": { "type": "string", "format": "date-time" },
+        "kycDocuments": {
+          "type": "object",
+          "properties": {
+            "idCardUrl": { "type": "string" },
+            "selfieUrl": { "type": "string" }
+          }
+        },
+        "kycRejectionReason": { "type": "string" },
+        "isManuallyVerified": { "type": "boolean" }
+      },
+      "required": ["uid", "email", "displayName"]
+    },
+    "Post": {
+      "title": "Social Post",
+      "description": "A text-based status update shared by a user.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "authorId": { "type": "string" },
+        "authorName": { "type": "string" },
+        "authorPhoto": { "type": "string" },
+        "authorIsVerified": { "type": "boolean" },
+        "authorIsPremium": { "type": "boolean" },
+        "content": { "type": "string" },
+        "imageUrl": { "type": "string" },
+        "videoUrl": { "type": "string" },
+        "mediaType": { "type": "string", "enum": ["image", "video"] },
+        "likesCount": { "type": "number" },
+        "commentsCount": { "type": "number" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["authorId", "content", "createdAt"]
+    },
+    "Comment": {
+      "title": "Post Comment",
+      "description": "A comment on a specific post.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "postId": { "type": "string" },
+        "authorId": { "type": "string" },
+        "authorName": { "type": "string" },
+        "authorPhoto": { "type": "string" },
+        "content": { "type": "string" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["postId", "authorId", "content", "createdAt"]
+    },
+    "FriendRequest": {
+      "title": "Friend Request",
+      "description": "A request to connect between two users.",
+      "type": "object",
+      "properties": {
+        "fromId": { "type": "string" },
+        "fromName": { "type": "string" },
+        "toId": { "type": "string" },
+        "status": { "type": "string", "enum": ["pending", "accepted", "declined"] },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["fromId", "toId", "status", "createdAt"]
+    },
+    "Friend": {
+      "title": "Friend Connection",
+      "description": "A confirmed friendship between two users.",
+      "type": "object",
+      "properties": {
+        "uid": { "type": "string" },
+        "displayName": { "type": "string" },
+        "photoURL": { "type": "string" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["uid", "createdAt"]
+    },
+    "Message": {
+      "title": "Chat Message",
+      "description": "A private message between two users.",
+      "type": "object",
+      "properties": {
+        "senderId": { "type": "string" },
+        "receiverId": { "type": "string" },
+        "content": { "type": "string" },
+        "mediaUrl": { "type": [ "string", "null" ] },
+        "mediaType": { "type": [ "string", "null" ] },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "chatId": { "type": "string" },
+        "status": { "type": "string", "enum": ["sent", "delivered", "read"] }
+      },
+      "required": ["senderId", "receiverId", "createdAt", "chatId"]
+    },
+    "Chat": {
+      "title": "One-to-One Conversation",
+      "description": "Metadata for a direct conversation.",
+      "type": "object",
+      "properties": {
+        "participants": { "type": "array", "items": { "type": "string" } },
+        "lastMessage": { "type": "string" },
+        "lastMessageAt": { "type": "string", "format": "date-time" },
+        "lastSenderId": { "type": "string" },
+        "updatedAt": { "type": "string", "format": "date-time" },
+        "status": { "type": "string", "enum": ["pending", "accepted", "declined"] },
+        "participantNames": { "type": "object" },
+        "participantPhotos": { "type": "object" },
+        "unreadCount": { "type": "object" }
+      },
+      "required": ["participants", "lastMessageAt", "updatedAt"]
+    },
+    "Notification": {
+      "title": "User Notification",
+      "description": "Alert for interactions like likes, comments, or follow events.",
+      "type": "object",
+      "properties": {
+        "type": { "type": "string", "enum": ["like", "comment", "friend_request", "follow"] },
+        "fromId": { "type": "string" },
+        "fromName": { "type": "string" },
+        "targetId": { "type": "string" },
+        "read": { "type": "boolean" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["type", "fromId", "targetId", "read", "createdAt"]
+    },
+    "Like": {
+      "title": "Post Like",
+      "description": "A like on a post.",
+      "type": "object",
+      "properties": {
+        "userId": { "type": "string" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["userId", "createdAt"]
+    },
+    "AppConfig": {
+      "title": "Application Configuration",
+      "description": "Global settings like APK download link and version.",
+      "type": "object",
+      "properties": {
+        "apkUrl": { "type": "string" },
+        "version": { "type": "string" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      }
+    },
+    "SavedPost": {
+      "title": "Saved Post",
+      "description": "A post saved by a user for later viewing.",
+      "type": "object",
+      "properties": {
+        "postId": { "type": "string" },
+        "savedAt": { "type": "string", "format": "date-time" },
+        "content": { "type": "string" },
+        "authorName": { "type": "string" },
+        "mediaUrl": { "type": "string" }
+      },
+      "required": ["postId", "savedAt"]
+    }
+  },
+  "firestore": {
+    "/appConfig/{configId}": {
+      "schema": "AppConfig",
+      "description": "Global application configuration"
+    },
+    "/users/{userId}/savedPosts/{postId}": {
+      "schema": "SavedPost",
+      "description": "Posts saved by users"
+    },
+    "/users/{userId}": {
+      "schema": "User",
+      "description": "User profiles"
+    },
+    "/posts/{postId}": {
+      "schema": "Post",
+      "description": "Global feed posts"
+    },
+    "/posts/{postId}/comments/{commentId}": {
+      "schema": "Comment",
+      "description": "Post comments"
+    },
+    "/posts/{postId}/likes/{userId}": {
+      "schema": "Like",
+      "description": "Post likes"
+    },
+    "/friendRequests/{requestId}": {
+      "schema": "FriendRequest",
+      "description": "Friendship requests"
+    },
+    "/users/{userId}/friends/{friendId}": {
+      "schema": "Friend",
+      "description": "Confirmed friends"
+    },
+    "/users/{userId}/blockedUsers/{blockedId}": {
+      "schema": {
+        "type": "object",
+        "properties": {
+          "uid": { "type": "string" },
+          "displayName": { "type": "string" },
+          "createdAt": { "type": "string", "format": "date-time" }
+        },
+        "required": ["uid", "createdAt"]
+      },
+      "description": "Users blocked by this user"
+    },
+    "/chats/{chatId}/messages/{messageId}": {
+      "schema": "Message",
+      "description": "Chat messages"
+    },
+    "/users/{userId}/notifications/{notificationId}": {
+      "schema": "Notification",
+      "description": "User notifications"
+    },
+    "/users/{userId}/followers/{followerId}": {
+      "schema": {
+        "type": "object",
+        "properties": {
+          "uid": { "type": "string" },
+          "createdAt": { "type": "string", "format": "date-time" }
+        },
+        "required": ["uid", "createdAt"]
+      },
+      "description": "Users following this user"
+    },
+    "/users/{userId}/following/{followingId}": {
+      "schema": {
+        "type": "object",
+        "properties": {
+          "uid": { "type": "string" },
+          "createdAt": { "type": "string", "format": "date-time" }
+        },
+        "required": ["uid", "createdAt"]
+      },
+      "description": "Users this user is following"
+    },
+    "/chats/{chatId}": {
+      "schema": "Chat",
+      "description": "Chat session metadata"
+    },
+    "/chats/{chatId}/messages/{messageId}": {
+      "schema": "Message",
+      "description": "Messages in the chat"
+    }
+  }
+}
