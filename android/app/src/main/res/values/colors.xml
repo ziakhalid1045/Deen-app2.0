@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="deen_green">#1B7A3D</color>
+    <color name="deen_green_light">#4CAF50</color>
+    <color name="deen_green_dark">#0D5C2E</color>
+    <color name="deen_gold">#D4A843</color>
+    <color name="black">#FF000000</color>
+    <color name="white">#FFFFFFFF</color>
+    <color name="background_light">#F8FBF8</color>
+    <color name="background_dark">#121512</color>
+</resources>

@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">Deen App</string>
+    <string name="offline_message">No Internet Connection.\nPlease check your network and try again.</string>
+</resources>

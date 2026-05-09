@@ -1,0 +1,11 @@
+{
+  "name": "Deen App",
+  "description": "A modern Islamic social media platform for sharing, connecting, and private messaging.",
+  "requestFramePermissions": [
+    "web-share",
+    "camera",
+    "microphone",
+    "geolocation"
+  ],
+  "majorCapabilities": []
+}
