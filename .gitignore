@@ -18,4 +18,5 @@ android/captures/
 *.hprof
 *.jks
 *.keystore
+android/keystore.properties
 android/.idea/

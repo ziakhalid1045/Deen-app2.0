@@ -82,8 +82,11 @@ fun LoginScreen(
             val task = GoogleSignIn.getSignedInAccountFromIntent(result.data)
             try {
                 val account = task.getResult(ApiException::class.java)
-                account.idToken?.let { idToken ->
+                val idToken = account.idToken
+                if (idToken != null) {
                     viewModel.signInWithGoogle(idToken)
+                } else {
+                    viewModel.setError("Google sign-in failed: No ID token received")
                 }
             } catch (e: ApiException) {
                 viewModel.setError("Google sign-in failed: ${e.message}")
