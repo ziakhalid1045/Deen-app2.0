@@ -6,6 +6,7 @@ import com.deen.app.data.model.Post
 import com.deen.app.data.model.User
 import com.deen.app.data.repository.PostRepository
 import com.deen.app.data.repository.UserRepository
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -23,6 +24,8 @@ data class ProfileUiState(
 class ProfileViewModel : ViewModel() {
     private val userRepository = UserRepository()
     private val postRepository = PostRepository()
+    private var profileJob: Job? = null
+    private var postsJob: Job? = null
 
     private val _uiState = MutableStateFlow(ProfileUiState())
     val uiState: StateFlow<ProfileUiState> = _uiState.asStateFlow()
@@ -30,12 +33,16 @@ class ProfileViewModel : ViewModel() {
     val currentUserId: String get() = userRepository.currentUserId
 
     fun loadProfile(userId: String = userRepository.currentUserId) {
-        viewModelScope.launch {
+        profileJob?.cancel()
+        postsJob?.cancel()
+        _uiState.value = ProfileUiState()
+
+        profileJob = viewModelScope.launch {
             userRepository.getUserFlow(userId).collect { user ->
                 _uiState.value = _uiState.value.copy(user = user, isLoading = false)
             }
         }
-        viewModelScope.launch {
+        postsJob = viewModelScope.launch {
             postRepository.getUserPosts(userId).collect { posts ->
                 _uiState.value = _uiState.value.copy(posts = posts)
             }

@@ -59,9 +59,8 @@ const FollowButton: React.FC<FollowButtonProps> = ({ targetId, targetName, class
         batch.update(targetUserRef, { followersCount: increment(-1) });
         batch.update(currentUserRef, { followingCount: increment(-1) });
         
-        // Remove from friends if it was mutual
+        // Remove own friend entry (rules only allow isOwner writes to friends)
         batch.delete(myFriendDoc);
-        batch.delete(targetFriendDoc);
 
         // Add Unfollow Notification
         const notificationRef = doc(collection(db, 'users', targetId, 'notifications'));
@@ -80,10 +79,9 @@ const FollowButton: React.FC<FollowButtonProps> = ({ targetId, targetName, class
         batch.update(targetUserRef, { followersCount: increment(1) });
         batch.update(currentUserRef, { followingCount: increment(1) });
 
-        // If mutual, add to friends
+        // Add own friend entry if mutual (rules only allow isOwner writes to friends)
         if (hasMutualFollow) {
           batch.set(myFriendDoc, { id: targetId, displayName: targetName, createdAt: serverTimestamp() });
-          batch.set(targetFriendDoc, { id: currentUser.uid, displayName: myProfile?.displayName || 'Seeker', createdAt: serverTimestamp() });
         }
 
         // Add Notification

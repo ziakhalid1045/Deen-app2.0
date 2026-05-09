@@ -1,6 +1,6 @@
 import { messaging, db, auth } from '../firebase';
 import { getToken, onMessage } from 'firebase/messaging';
-import { doc, updateDoc, arrayUnion } from 'firebase/firestore';
+import { doc, setDoc, serverTimestamp } from 'firebase/firestore';
 
 export const requestNotificationPermission = async () => {
   if (!messaging) return null;
@@ -13,10 +13,11 @@ export const requestNotificationPermission = async () => {
       });
       
       if (token && auth.currentUser) {
-        // Save token to user profile
-        const userRef = doc(db, 'users', auth.currentUser.uid);
-        await updateDoc(userRef, {
-          fcmTokens: arrayUnion(token)
+        // Store FCM token in a subcollection to avoid user document field restrictions
+        const tokenRef = doc(db, 'users', auth.currentUser.uid, 'fcmTokens', token);
+        await setDoc(tokenRef, {
+          token,
+          createdAt: serverTimestamp()
         });
         return token;
       }

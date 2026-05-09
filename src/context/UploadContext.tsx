@@ -90,7 +90,7 @@ export const UploadProvider = ({ children }: { children: ReactNode }) => {
       });
 
       const field = type === 'profile' ? 'photoURL' : 'coverURL';
-      await updateDoc(doc(db, 'profiles', userId), {
+      await updateDoc(doc(db, 'users', userId), {
         [field]: res.url,
         updatedAt: serverTimestamp()
       });

@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.deen.app.data.model.Comment
 import com.deen.app.data.model.Post
 import com.deen.app.data.repository.PostRepository
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -21,6 +22,7 @@ data class HomeFeedUiState(
 
 class HomeFeedViewModel : ViewModel() {
     private val postRepository = PostRepository()
+    private var commentsJob: Job? = null
 
     private val _uiState = MutableStateFlow(HomeFeedUiState())
     val uiState: StateFlow<HomeFeedUiState> = _uiState.asStateFlow()
@@ -87,7 +89,8 @@ class HomeFeedViewModel : ViewModel() {
     }
 
     fun loadComments(postId: String) {
-        viewModelScope.launch {
+        commentsJob?.cancel()
+        commentsJob = viewModelScope.launch {
             postRepository.getComments(postId).collect { comments ->
                 _uiState.value = _uiState.value.copy(comments = comments)
             }

@@ -90,7 +90,6 @@ const EditProfile = () => {
     try {
       await updateDoc(doc(db, 'users', profile.uid), {
         displayName,
-        username: username.trim().toLowerCase(),
         photoURL,
         coverURL,
         bio,

@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.deen.app.data.model.Chat
 import com.deen.app.data.model.Message
 import com.deen.app.data.repository.ChatRepository
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -23,6 +24,7 @@ data class ChatDetailUiState(
 
 class ChatViewModel : ViewModel() {
     private val chatRepository = ChatRepository()
+    private var messagesJob: Job? = null
 
     private val _chatListState = MutableStateFlow(ChatListUiState())
     val chatListState: StateFlow<ChatListUiState> = _chatListState.asStateFlow()
@@ -48,10 +50,15 @@ class ChatViewModel : ViewModel() {
     }
 
     fun loadMessages(chatId: String) {
+        messagesJob?.cancel()
         val chat = _chatListState.value.chats.find { it.id == chatId }
-        _chatDetailState.value = _chatDetailState.value.copy(chat = chat)
+        _chatDetailState.value = _chatDetailState.value.copy(
+            chat = chat,
+            messages = emptyList(),
+            isLoading = true
+        )
 
-        viewModelScope.launch {
+        messagesJob = viewModelScope.launch {
             chatRepository.getMessages(chatId).collect { messages ->
                 _chatDetailState.value = _chatDetailState.value.copy(
                     messages = messages,
