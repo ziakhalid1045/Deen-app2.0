@@ -1,26 +1,36 @@
 {
   "project_info": {
-    "project_number": "000000000000",
-    "project_id": "deen-app-placeholder",
-    "storage_bucket": "deen-app-placeholder.appspot.com"
+    "project_number": "29014897670",
+    "project_id": "studio-3408972143-10cb0",
+    "storage_bucket": "studio-3408972143-10cb0.firebasestorage.app"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:000000000000:android:0000000000000000000000",
+        "mobilesdk_app_id": "1:29014897670:android:fbe7f4488e492c3224bf87",
         "android_client_info": {
           "package_name": "com.deen.app"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "29014897670-l14cjkbqcpdleao1qk5kkqfm0jd0hr9v.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
-          "current_key": "AIzaSyPLACEHOLDER_REPLACE_WITH_REAL_KEY"
+          "current_key": "AIzaSyCyYrLkt0wY8F1hCkphGNFttDoJLcxe1QY"
         }
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "29014897670-km911ec8em7lgoqb9h3rmosm1tftksg9.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
         }
       }
     }
