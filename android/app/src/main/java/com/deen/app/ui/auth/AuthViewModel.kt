@@ -67,6 +67,18 @@ class AuthViewModel : ViewModel() {
         }
     }
 
+    fun signInWithGoogle(idToken: String) {
+        viewModelScope.launch {
+            _uiState.value = _uiState.value.copy(isLoading = true, error = null)
+            val result = authRepository.signInWithGoogle(idToken)
+            _uiState.value = _uiState.value.copy(
+                isLoading = false,
+                isLoggedIn = result.isSuccess,
+                error = result.exceptionOrNull()?.message
+            )
+        }
+    }
+
     fun signOut() {
         viewModelScope.launch {
             authRepository.signOut()

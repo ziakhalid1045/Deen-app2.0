@@ -16,4 +16,6 @@ android/captures/
 *.apk
 *.aab
 *.hprof
+*.jks
+*.keystore
 android/.idea/

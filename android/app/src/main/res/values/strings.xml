@@ -1,4 +1,5 @@
 <resources>
     <string name="app_name">Deen App</string>
     <string name="offline_message">No Internet Connection.\nPlease check your network and try again.</string>
+    <string name="default_web_client_id">29014897670-l14cjkbqcpdleao1qk5kkqfm0jd0hr9v.apps.googleusercontent.com</string>
 </resources>

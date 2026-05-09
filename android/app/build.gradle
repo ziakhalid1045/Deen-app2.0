@@ -21,10 +21,20 @@ android {
         }
     }
 
+    signingConfigs {
+        release {
+            storeFile file("../deen-app-keystore.jks")
+            storePassword "deenapp123"
+            keyAlias "deen-app"
+            keyPassword "deenapp123"
+        }
+    }
+
     buildTypes {
         release {
             minifyEnabled true
             shrinkResources true
+            signingConfig signingConfigs.release
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
